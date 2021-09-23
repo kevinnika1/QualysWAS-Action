@@ -1,15 +1,18 @@
-name: 'Sonarcloud integration'
+name: 'Qualys WAS integration with GitHub'
 author: 'Kevin Nika'
-description: 'A way to output security vulnerablilites obtained by SonarCloud scans into Githubs "Annotations"'
+description: 'A way to prefrom and output results of DAST scan in GitHub using Qualys.'
 inputs:
-  org:  # id of input
-    description: 'sonarcloud organisation used'
+  qualysuser:  # id of input
+    description: 'Username of Qualys API account'
     required: true
-  project-key: 
-    description: 'project key that can be found in sonarcloud under the project you are scanning'
+  qualyspass: 
+    description: 'Password of Qualys API account'
     required: true
-  repo_token:
-    description: 'Github repo token'
+  website:
+    description: 'Website you will be preforming the DAST on'
+    required: true
+  project:
+    description: 'Project/app name for the reports'
     required: true
 #  pat: 
 #    description: 'PAT'
@@ -17,19 +20,17 @@ inputs:
 runs:
   using: "composite"
   steps:
-   # first run the python script that will output the sonarresults
     - name: entry 
       uses: actions/checkout@v2
       with:
-       repository: kevinnika1/Sonarcloud-GithubChecks-action
-    - run: ${{ github.action_path }}/entrypoint.sh '${{ inputs.org }}' '${{ inputs.project-key }}'
+       repository: kevinnika1/QualysWAS-Action
+       
+    - run: ${{ github.action_path }}/entrypoint.sh '${{ inputs.qualysuser }}' '${{ inputs.qualyspass }}' '${{ inputs.website }}' '${{ inputs.project }}'
       shell: bash
-     # shell: bash
-    # next run the annotaion action that will output the results into github checks/annotations
-    - name: upload sonar results to annotaions
-      uses: yuzutech/annotations-action@v0.3.0
+ 
+    - name: save the report outputted by DAST scan
+      uses: actions/upload-artifact@v2
       with:
-          repo-token: "${{ inputs.repo_token }}"
-          title: 'Sonar Issues'
-          input: './sonarresults.json'
+        name: DAST results
+        path: ./reports/
     

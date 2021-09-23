@@ -1,0 +1,35 @@
+name: 'Sonarcloud integration'
+author: 'Kevin Nika'
+description: 'A way to output security vulnerablilites obtained by SonarCloud scans into Githubs "Annotations"'
+inputs:
+  org:  # id of input
+    description: 'sonarcloud organisation used'
+    required: true
+  project-key: 
+    description: 'project key that can be found in sonarcloud under the project you are scanning'
+    required: true
+  repo_token:
+    description: 'Github repo token'
+    required: true
+#  pat: 
+#    description: 'PAT'
+#    required: true
+runs:
+  using: "composite"
+  steps:
+   # first run the python script that will output the sonarresults
+    - name: entry 
+      uses: actions/checkout@v2
+      with:
+       repository: kevinnika1/Sonarcloud-GithubChecks-action
+    - run: ${{ github.action_path }}/entrypoint.sh '${{ inputs.org }}' '${{ inputs.project-key }}'
+      shell: bash
+     # shell: bash
+    # next run the annotaion action that will output the results into github checks/annotations
+    - name: upload sonar results to annotaions
+      uses: yuzutech/annotations-action@v0.3.0
+      with:
+          repo-token: "${{ inputs.repo_token }}"
+          title: 'Sonar Issues'
+          input: './sonarresults.json'
+    

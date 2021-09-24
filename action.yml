@@ -25,7 +25,7 @@ runs:
       with:
        repository: kevinnika1/QualysWAS-Action
        
-    - run: ${{ github.action_path }}/entry.sh '${{ inputs.qualysuser }}' '${{ inputs.qualyspass }}' '${{ inputs.website }}' '${{ inputs.project }}'
+    - run: ${{ github.action_path }}/entrypoint.sh '${{ inputs.qualysuser }}' '${{ inputs.qualyspass }}' '${{ inputs.website }}' '${{ inputs.project }}'
       shell: bash
  
     - name: save the report outputted by DAST scan

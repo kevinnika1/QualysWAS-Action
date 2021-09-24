@@ -20,10 +20,10 @@ inputs:
 runs:
   using: "composite"
   steps:
-  #  - name: entry 
-  #    uses: actions/checkout@v2
-  #    with:
-  #     repository: kevinnika1/QualysWAS-Action
+    - name: entry 
+      uses: actions/checkout@v2
+      with:
+       repository: kevinnika1/QualysWAS-Action
       # token: ${{ inputs.pat }}
        
     - run: ${{ github.action_path }}/entrypoint.sh '${{ inputs.qualysuser }}' '${{ inputs.qualyspass }}' '${{ inputs.website }}' '${{ inputs.project }}'

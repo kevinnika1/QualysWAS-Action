@@ -10,7 +10,7 @@ def getArgs():
     parser.add_argument( "--qualysuser", type=str, help="qualys username" )
     parser.add_argument( "--qualyspass", type=str, help="qualys password" )
     parser.add_argument( "--website", type=str, help="website you are testing" )
-    parser.add_argument( "--project", type=str, help="website you are testing" )
+    parser.add_argument( "--project", type=str, help="project you are testing" )
     return parser, parser.parse_args()
 
 

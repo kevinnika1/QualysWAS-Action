@@ -14,9 +14,9 @@ inputs:
   project:
     description: 'Project/app name for the reports'
     required: true
-#  pat: 
-#    description: 'PAT'
-#    required: true
+  pat: 
+    description: 'PAT'
+    required: true
 runs:
   using: "composite"
   steps:
@@ -24,6 +24,7 @@ runs:
       uses: actions/checkout@v2
       with:
        repository: kevinnika1/QualysWAS-Action
+       token: ${{ inputs.pat }}
        
     - run: ${{ github.action_path }}/entrypoint.sh '${{ inputs.qualysuser }}' '${{ inputs.qualyspass }}' '${{ inputs.website }}' '${{ inputs.project }}'
       shell: bash
